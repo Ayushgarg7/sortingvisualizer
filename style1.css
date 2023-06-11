@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(96, 95, 95);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #000000;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.array-container {
+  display: flex;
+  margin-top: 150px;
+  justify-content: center;
+  align-items: flex-end;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.bar {
+  width: 20px;
+  margin-right: 2px;
+  background-color: #000000;
+  display: inline-block;
+  transition: height 0.2s ease;
+}
+.slider{
+  border: 2px solid black;
+  /* justify-content: center; */
+  align-items: center;
+}
+.slider input{
+  align-items: center;
+  justify-content: center;
+}
+.sorting-options {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.sorting-options button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #6e6e6e;
+  /* font-style: italic; */
+  color: #070606;
+  border: none;
+  border-radius: 26px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: background-color 0.2s ease;
+}
+
+.sorting-options button:hover {
+  font-size: 90%;
+  /* box-shadow: #ff2885; */
+  font-style: italic  ;
+  background-color: #38ff38;
+}
+
+.navbar-bottomup{
+  background-color: #ff2885;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  bottom: 0;
+
+}
+
+@media screen and (max-width: 768px) {
+
+  .array-container {
+    
+      height: 200px;
+  }
+
+  .bar {
+      width: 15px;
+      margin-right: 1px;
+  }
+
+  .sorting-options button {
+      padding: 8px 16px;
+      font-size: 54px;
+      margin: 0 5px;
+  }
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.graph {
+  width: 300px;
+  height: 200px;
+  border: 1px solid black;
+  margin-bottom: 20px;
+  margin-top: auto;
+}
+
+
+button {
+  margin-right: 10px;
+}
+
+/* Navbar styles */
+.navbar {
+  background-color: #ff2885;
+  color: #000000;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+.navbar-bottom {
+  bottom: 0;
+}
+
+.navbar-bottom .sorting-options {
+  justify-content: center;
+}
