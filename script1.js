@@ -1,200 +1,259 @@
-// Generate a random array of numbers
-function generateArray(size, min, max) {
-  var array = [];
-  for (var i = 0; i < size; i++) {
-    array.push(Math.floor(Math.random() * (max - min + 1)) + min);
+const visualizationArea = document.querySelector('.visualization');
+  const startButton = document.getElementById('startButton');
+  const resetButton = document.getElementById('resetButton');
+  const speedRange = document.getElementById('speedRange');
+  const sizeRange = document.getElementById('sizeRange');
+  const algorithmSelect = document.getElementById('algorithmSelect');
+  let array = [];
+
+  resetButton.addEventListener('click', () => {
+    generateArray(sizeRange.value);
+  });
+
+  sizeRange.addEventListener('input', () => {
+    const newSize = sizeRange.value;
+    generateArray(newSize);
+  });
+
+  function generateArray(size) {
+    array = [];
+    for (let i = 0; i < size; i++) {
+      array.push(Math.floor(Math.random() * 100) + 1);
+    }
+    displayArray();
   }
-  return array;
-}
 
-// Reset the array and display it on the screen
-function resetArray() {
-  var arrayContainer = document.querySelector('.array-container');
-  arrayContainer.innerHTML = '';
+//   function getColor(value) {
+//     const hue = Math.floor((value / 100) * 120); // Map value to hue (0-120)
+//     return `hsl(${hue}, 100%, 50%)`; // Convert hue to an HSL color
+//   }
 
-  var array = generateArray(20, 10, 200);
+  function displayArray() {
+    visualizationArea.innerHTML = '';
+    array.forEach(value => {
+      const bar = document.createElement('div');
+      bar.style.height = `${value * 3}px`;
+    //   bar.style.backgroundColor = color;
+    //   bar.style.border = '1px solid white';
+      visualizationArea.appendChild(bar);
+    });
+  }
 
+
+  sizeRange.addEventListener('input', () => {
+    const newSize = sizeRange.value;
+    generateArray(newSize);
+  });
+
+
+
+  async function bubbleSort() {
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array.length - i - 1; j++) {
+        if (array[j] > array[j + 1]) {
+          await swap(j, j + 1);
+        }
+      }
+    }
+  }
+
+  async function selectionSort() {
+    for (let i = 0; i < array.length - 1; i++) {
+      let minIndex = i;
+      for (let j = i + 1; j < array.length; j++) {
+        if (array[j] < array[minIndex]) {
+          minIndex = j;
+        }
+      }
+      await swap(i, minIndex);
+    }
+  }
   
-  for (var i = 0; i < array.length; i++) {
-    var bar = document.createElement('div');
-    bar.classList.add('bar');
-    bar.style.height = array[i] + 'px';
-    arrayContainer.appendChild(bar);
-  }
-}
-
-// Swap two elements in the array
-function swap(array, i, j) {
-  var temp = array[i];
-  array[i] = array[j];
-  array[j] = temp;
-}
-
-// Visualize Bubble Sort algorithm
-async function visualizeBubbleSort() {
-  resetArray();
-  var arrayBars = document.querySelectorAll('.bar');
-  var array = [];
-  for (var i = 0; i < arrayBars.length; i++) {
-    array.push(parseInt(arrayBars[i].style.height));
-  }
-
-  var n = array.length;
-
-  for (var i = 0; i < n - 1; i++) {
-    for (var j = 0; j < n - 1 - i; j++) {
-      // Visualize the comparison
-      arrayBars[j].style.backgroundColor = '#38ff38';
-      arrayBars[j + 1].style.backgroundColor = '#38ff38';
-
-      await new Promise(resolve => setTimeout(resolve, 300)); // Delay for visualization
-
-      if (array[j] > array[j + 1]) {
-        swap(array, j, j + 1);
-        swap(arrayBars, j, j + 1);
-
-        // Update the heights of bars after swapping
-        arrayBars[j].style.height = array[j] + 'px';
-        arrayBars[j + 1].style.height = array[j + 1] + 'px';
-      }
-
-      // Reset the color after comparison
-      arrayBars[j].style.backgroundColor = '#333';
-      arrayBars[j + 1].style.backgroundColor = '#333';
+  async function mergeSort(arr, left, right) {
+    if (left < right) {
+      const middle = Math.floor((left + right) / 2);
+      await mergeSort(arr, left, middle);
+      await mergeSort(arr, middle + 1, right);
+      await merge(arr, left, middle, right);
     }
-
-    // Visualize the sorted portion
-    arrayBars[n - 1 - i].style.backgroundColor = '#ff2885';
   }
-
-  // Visualize the final sorted array
-  for (var i = 0; i < arrayBars.length; i++) {
-    arrayBars[i].style.backgroundColor = '#ff2885';
-  }
-}
-
-// Visualize Selection Sort algorithm
-async function visualizeSelectionSort() {
-  resetArray();
-  var arrayBars = document.querySelectorAll('.bar');
-  var array = [];
-  for (var i = 0; i < arrayBars.length; i++) {
-    array.push(parseInt(arrayBars[i].style.height));
-  }
-
-  var n = array.length;
-
-  for (var i = 0; i < n - 1; i++) {
-    var minIndex = i;
-
-    // Visualize the current minimum index
-    arrayBars[minIndex].style.backgroundColor = '#38ff38';
-
-    for (var j = i + 1; j < n; j++) {
-      // Visualize the comparison
-      arrayBars[j].style.backgroundColor = '#38ff38';
-
-      await new Promise(resolve => setTimeout(resolve, 300)); // Delay for visualization
-
-      if (array[j] < array[minIndex]) {
-        // Reset the previous minimum index color
-        arrayBars[minIndex].style.backgroundColor = '#333';
-        minIndex = j;
+  
+  async function merge(arr, left, middle, right) {
+    const n1 = middle - left + 1;
+    const n2 = right - middle;
+    const leftArray = new Array(n1);
+    const rightArray = new Array(n2);
+  
+    for (let i = 0; i < n1; i++) {
+      leftArray[i] = arr[left + i];
+    }
+    for (let j = 0; j < n2; j++) {
+      rightArray[j] = arr[middle + 1 + j];
+    }
+  
+    let i = 0;
+    let j = 0;
+    let k = left;
+  
+    while (i < n1 && j < n2) {
+      if (leftArray[i] <= rightArray[j]) {
+        arr[k] = leftArray[i];
+        i++;
       } else {
-        // Reset the color after comparison
-        arrayBars[j].style.backgroundColor = '#333';
+        arr[k] = rightArray[j];
+        j++;
+      }
+      k++;
+      await sleep(100 - speedRange.value);
+      displayArray();
+    }
+  
+    while (i < n1) {
+      arr[k] = leftArray[i];
+      i++;
+      k++;
+      await sleep(100 - speedRange.value);
+      displayArray();
+    }
+  
+    while (j < n2) {
+      arr[k] = rightArray[j];
+      j++;
+      k++;
+      await sleep(100 - speedRange.value);
+      displayArray();
+    }
+  }
+  
+  async function quickSort(arr, low, high) {
+    if (low < high) {
+      const pivotIndex = await partition(arr, low, high);
+      await quickSort(arr, low, pivotIndex - 1);
+      await quickSort(arr, pivotIndex + 1, high);
+    }
+  }
+  
+  async function partition(arr, low, high) {
+    const pivot = arr[high];
+    let i = low - 1;
+  
+    for (let j = low; j < high; j++) {
+      if (arr[j] < pivot) {
+        i++;
+        await swap(i, j);
       }
     }
-
-    // Swap the minimum element with the current element
-    swap(array, i, minIndex);
-    swap(arrayBars, i, minIndex);
-
-    // Update the heights of bars after swapping
-    arrayBars[i].style.height = array[i] + 'px';
-    arrayBars[minIndex].style.height = array[minIndex] + 'px';
-
-    // Visualize the sorted portion
-    arrayBars[i].style.backgroundColor = '#ff2885';
+  
+    await swap(i + 1, high);
+    return i + 1;
   }
-
-  // Visualize the final sorted array
-  arrayBars[n - 1].style.backgroundColor = '#ff2885';
-}
-
-// Visualize Insertion Sort algorithm
-async function visualizeInsertionSort() {
-  resetArray();
-  // generateArray(20,10,200)
-  var arrayBars = document.querySelectorAll('.bar');
-  var array = [];
-  for (var i = 0; i < arrayBars.length; i++) {
-    array.push(parseInt(arrayBars[i].style.height));
-  }
-
-  var n = array.length;
-
-  for (var i = 1; i < n; i++) {
-    var key = array[i];
-    var j = i - 1;
-
-    // Visualize the current key
-    arrayBars[i].style.backgroundColor = '#38ff38';
-
-    while (j >= 0 && array[j] > key) {
-      // Shift elements greater than the key to the right
-      array[j + 1] = array[j];
-      arrayBars[j + 1].style.height = array[j + 1] + 'px';
-
-      // Visualize the swapping
-      arrayBars[j].style.backgroundColor = '#ffaa00';
-      arrayBars[j + 1].style.backgroundColor = '#ffaa00';
-
-      await new Promise(resolve => setTimeout(resolve, 300)); // Delay for visualization
-
-      // Reset the color after swapping
-      arrayBars[j].style.backgroundColor = '#333';
-      arrayBars[j + 1].style.backgroundColor = '#333';
-
-      j--;
+  
+  async function heapSort() {
+    const n = array.length;
+  
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      await heapify(n, i);
     }
-
-    array[j + 1] = key;
-    arrayBars[j + 1].style.height = key + 'px';
-
-    // Visualize the sorted portion
-    for (var k = 0; k <= i; k++) {
-      arrayBars[k].style.backgroundColor = '#ff2885';
+  
+    for (let i = n - 1; i > 0; i--) {
+      await swap(0, i);
+      await heapify(i, 0);
     }
   }
-
-  // Visualize the final sorted array
-  for (var i = 0; i < arrayBars.length; i++) {
-    arrayBars[i].style.backgroundColor = '#ff2885';
+  
+  async function heapify(heapSize, rootIndex) {
+    let largestIndex = rootIndex;
+    const leftChildIndex = 2 * rootIndex + 1;
+    const rightChildIndex = 2 * rootIndex + 2;
+  
+    if (leftChildIndex < heapSize && array[leftChildIndex] > array[largestIndex]) {
+      largestIndex = leftChildIndex;
+    }
+  
+    if (rightChildIndex < heapSize && array[rightChildIndex] > array[largestIndex]) {
+      largestIndex = rightChildIndex;
+    }
+  
+    if (largestIndex !== rootIndex) {
+      await swap(rootIndex, largestIndex);
+      await heapify(heapSize, largestIndex);
+    }
   }
-}
+  
+  async function insertionSort() {
+    for (let i = 1; i < array.length; i++) {
+      const key = array[i];
+      let j = i - 1;
+      while (j >= 0 && array[j] > key) {
+        array[j + 1] = array[j];
+        j--;
+        await sleep(100 - speedRange.value);
+        displayArray();
+      }
+      array[j + 1] = key;
+    }
+  }
+  
 
-// Generate a new array on page load
-window.addEventListener('load', function () {
-  resetArray();
-});
+  async function swap(index1, index2) {
+    await sleep(100 - speedRange.value);
+    [array[index1], array[index2]] = [array[index2], array[index1]];
+    displayArray();
+  }
 
-// Attach event listeners to the buttons
-document.getElementById('resetBtn').addEventListener('click', function () {
-  resetArray();
-});
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-document.getElementById('bubbleSortBtn').addEventListener('click', function () {
-  resetArray();
-  visualizeBubbleSort();
-});
+  startButton.addEventListener('click', async () => {
+    const selectedAlgorithm = algorithmSelect.value;
+    const selectedSize = sizeRange.value;
 
-document.getElementById('selectionSortBtn').addEventListener('click', function () {
-  resetArray();
-  visualizeSelectionSort();
-});
+    startButton.disabled = true;
+    resetButton.disabled = true;
+    algorithmSelect.disabled = true;
+    sizeRange.disabled = true;
+  
 
-document.getElementById('insertionSortBtn').addEventListener('click', function () {
-  resetArray();
-  visualizeInsertionSort();
-});
+    generateArray(selectedSize);
+    displayArray();
+
+    if (selectedAlgorithm === 'bubbleSort') {
+      await bubbleSort();
+    }
+
+    else if (selectedAlgorithm === 'selectionSort') {
+        await selectionSort();
+      } else if (selectedAlgorithm === 'mergeSort') {
+        await mergeSort(array, 0, array.length - 1);
+        displayArray();
+      } else if (selectedAlgorithm === 'quickSort') {
+        await quickSort(array, 0, array.length - 1);
+        displayArray();
+      } else if (selectedAlgorithm === 'heapSort') {
+        await heapSort();
+        displayArray();
+      } else if (selectedAlgorithm === 'insertionSort') {
+        await insertionSort();
+      }
+
+      startButton.disabled = false;
+  resetButton.disabled = false;
+  algorithmSelect.disabled = false;
+  sizeRange.disabled = false;
+    
+  });
+  resetButton.addEventListener('click', () => {
+    generateArray(sizeRange.value);
+  
+    // Re-enable buttons after reset
+    startButton.disabled = false;
+    resetButton.disabled = false;
+    algorithmSelect.disabled = false;
+    sizeRange.disabled = false;
+  });
+
+  function toggleNavbar() {
+    const navbarItems = document.getElementById('navbarItems');
+    navbarItems.classList.toggle('show');
+  }
