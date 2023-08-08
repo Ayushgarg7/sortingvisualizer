@@ -1,37 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sorting Algorithm Visualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Sorting Algorithm Visualizer</title>
-      <link rel="stylesheet" href="style1.css">
-      
-    </head>
-    <body>
-      
-        <div class="navbar"><h1>Sorting Algorithm Visualizer</h1></div>
-        <div class="container">
-            <div class="array-container"></div>
-            <br>
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>Sorting Algorithm Visualizer</h2>
+        <label for="speedRange">Speed: </label>
+        <input type="range" id="speedRange" min="1" max="100" value="50" />
+        <label for="sizeRange">Array Size: </label>
+        <input type="range" id="sizeRange" min="10" max="100" value="50" />
+        <button id="startButton">Start Sorting</button>
+        <button id="resetButton">Show/Reset</button>
+        <select id="algorithmSelect">
+          <!-- <option value="bubbleSort">Bubble Sort</option> -->
+          <option value="bubbleSort">Bubble Sort</option>
+          <option value="selectionSort">Selection Sort</option>
+          <option value="mergeSort">Merge Sort</option>
+          <option value="quickSort">Quick Sort</option>
+          <option value="heapSort">Heap Sort</option>
+          <option value="insertionSort">Insertion Sort</option>
+          <!-- Add other sorting algorithms here -->
+        </select>
+      </div>
+      <div class="container-1">
+        <div class="visualization">
+          <!-- Visualization area -->
         </div>
-        <!-- <div class="slider">
-          
-          <div class="navbar">
-            speedRange : 
-            <input type="range" id="speedRange" min="100" max="6000" value="3000" step="1">
-          </div>
-        </div> -->
-        <!-- <div class="navbar-bottomup">Copyright reserved "Ayush Kumar Garg"</div> -->
-        <div class="navbar navbar-bottom">
-          <div class="sorting-options">
-            <button onclick="visualizeBubbleSort()" id="bubble">Bubble Sort</button>
-            <button onclick="visualizeSelectionSort()" id="selection">Selection Sort</button>
-            <button onclick="visualizeInsertionSort()" id="insertion">Insertion Sort</button>
-            <button onclick="resetArray()">Generate New Array</button>
-          </div>
+        <div class="social-icons">
+          <a href="https://github.com/Ayushgarg7" target="_blank"
+            ><i class="fab fa-github"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/ayush-garg-258784221/"
+            target="_blank"
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
+          <a href="mailto:ayushgarg1827@gmail.com" target="_blank"
+            ><i class="fas fa-envelope"></i
+          ></a>
         </div>
-<script src="script1.js"></script>
-
-<!-- <script src="speed.js"></script> -->
-</body>
+      </div>
+    </div>
+    <script src="script1.js"></script>
+  </body>
 </html>
-
