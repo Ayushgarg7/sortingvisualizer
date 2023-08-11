@@ -5,7 +5,7 @@ const visualizationArea = document.querySelector('.visualization');
   const sizeRange = document.getElementById('sizeRange');
   const algorithmSelect = document.getElementById('algorithmSelect');
   let array = [];
-
+  generateArray(sizeRange.value);
   resetButton.addEventListener('click', () => {
     generateArray(sizeRange.value);
   });
